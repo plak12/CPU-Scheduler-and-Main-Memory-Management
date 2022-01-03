@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Process {
     private ProcessControlBlock pcb;
@@ -19,30 +21,48 @@ public class Process {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
-
+        //?
+        pcb.setState(ProcessState.RUNNING,CPU.clock);
+        CPU.clock += 2;
     }
 
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
+       //?
+        if(pcb.getState() == ProcessState.RUNNING)
+            CPU.clock += 2;
+        else
+            CPU.clock += 1;
+        pcb.setState(ProcessState.READY,CPU.clock);
 
     }
 
     public double getWaitingTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        ArrayList<Integer> start = pcb.getStartTimes();
+        ArrayList<Integer> stop = pcb.getStopTimes();
+        double sum = start.get(0) - arrivalTime;
+
+        for(int i=0; i < stop.size() -1 ; i++)
+            sum += stop.get(i) - start.get(i+1);
+
+        return sum;
     }
 
     public double getResponseTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        int start = pcb.getStartTimes().get(0);
+
+        return start - arrivalTime;
     }
 
     public double getTurnAroundTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+
+        return burstTime + getWaitingTime();
     }
 }

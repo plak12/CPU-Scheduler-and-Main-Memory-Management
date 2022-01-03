@@ -24,6 +24,7 @@ public class CPU {
         // oso den exoume kamia diergasia sti NEW kai process[oles]==TERMINATED
         // exartatai an theloume i new na ginetai edo
 
+        //?
         while (flag)
         {
             flag=false;
@@ -38,7 +39,7 @@ public class CPU {
             }
         }
 
-        return;
+
 
     }
 
