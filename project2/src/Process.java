@@ -65,4 +65,7 @@ public class Process {
 
         return burstTime + getWaitingTime();
     }
+    public int getArrivalTime(){
+        return arrivalTime;
+    }
 }
