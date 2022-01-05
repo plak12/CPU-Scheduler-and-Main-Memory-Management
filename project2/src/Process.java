@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -6,6 +7,14 @@ public class Process {
     private int arrivalTime;
     private int burstTime;
     private int memoryRequirements;
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
+    public void setBurstTime(int burstTime) {
+        this.burstTime = burstTime;
+    }
 
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
@@ -29,7 +38,7 @@ public class Process {
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
-       //?
+        //?
         if(pcb.getState() == ProcessState.RUNNING)
             CPU.clock += 2;
         else

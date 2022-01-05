@@ -15,11 +15,22 @@ public class RoundRobin extends Scheduler {
 
     public void addProcess(Process p) {
         /* TODO: you need to add some code here */
+        processes.add(p);
     }
 
     public Process getNextProcess() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return null;
+        Process temp;
+        int i;
+        temp= processes.get(0);
+        for(i=0;i<processes.size()-1;i++){
+            processes.set(i,processes.get(i+1));
+        }
+        processes.set(i,temp);
+        return processes.get(0); //prwta kaleitai h addprocess kai meta h getnext
+    }
+    public int getQuantum(){
+        return quantum;
     }
 }
