@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public abstract class Scheduler {
 
     protected ArrayList<Process> processes; // the list of processes to be executed
+    // osa einai sto ready
 
     public Scheduler() {
         this.processes = new ArrayList<Process>();
@@ -19,8 +20,8 @@ public abstract class Scheduler {
     public void removeProcess(Process p) {
         /* TODO: you need to add some code here */
        //?
+
         processes.remove(p);
-        p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
 
     }
 

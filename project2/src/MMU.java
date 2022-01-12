@@ -17,11 +17,20 @@ public class MMU {
         /* TODO: you need to add some code here
          * Hint: this should return true if the process was able to fit into memory
          * and false if not */
+
+
         int address = algorithm.fitProcess(p,currentlyUsedMemorySlots);
-        if (address !=-1) // memory addresstis fitprocess??
+        if (address != -1)
             fit = true;
 
+        if (fit)
+            p.getPCB().setState(ProcessState.READY,CPU.clock);
 
         return fit;
+    }
+
+    public void removeFromMemory(Process p)
+    {
+        currentlyUsedMemorySlots.removeIf(m -> m.getP().equals(p));
     }
 }

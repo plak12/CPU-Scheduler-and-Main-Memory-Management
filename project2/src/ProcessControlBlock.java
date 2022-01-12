@@ -33,11 +33,15 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: update this.state, but also include currentClockTime
          * in startTimes/stopTimes */
+
         this.state=state;
-        if(state == ProcessState.TERMINATED || state == ProcessState.READY)
-            stopTimes.add(currentClockTime);
         if (state == ProcessState.RUNNING)
             startTimes.add(currentClockTime);
+
+        if(state == ProcessState.TERMINATED || state == ProcessState.READY)
+            stopTimes.add(currentClockTime);
+
+
 
     }
 

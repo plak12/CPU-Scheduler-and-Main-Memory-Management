@@ -8,8 +8,9 @@ public class MemorySlot {
     /* The following should always hold true:
      * start >= blockStart
      * end <= blockEnd */
+    private Process p;
 
-    public MemorySlot(int start, int end, int blockStart, int blockEnd) {
+    public MemorySlot(int start, int end, int blockStart, int blockEnd,Process p) {
         if ((start < blockStart) || (end > blockEnd)) {
             throw new java.lang.RuntimeException("Memory access out of bounds.");
         }
@@ -17,6 +18,8 @@ public class MemorySlot {
         this.end = end;
         this.blockStart = blockStart;
         this.blockEnd = blockEnd;
+        this.p = p;
+
     }
 
     public int getBlockStart() {
@@ -43,4 +46,5 @@ public class MemorySlot {
         this.end = end;
     }
 
+    public Process getP() { return p;}
 }
