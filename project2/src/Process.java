@@ -8,19 +8,20 @@ public class Process {
     private int burstTime;
     private int memoryRequirements;
 
-    public int getBurstTime() {
-        return burstTime;
-    }
-
-    public void setBurstTime(int burstTime) {
-        this.burstTime = burstTime;
-    }
 
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.memoryRequirements = memoryRequirements;
         this.pcb = new ProcessControlBlock();
+    }
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
+    public void setBurstTime(int burstTime) {
+        this.burstTime = burstTime;
     }
 
     public ProcessControlBlock getPCB() {
@@ -31,6 +32,7 @@ public class Process {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
         //?
+
         pcb.setState(ProcessState.RUNNING,CPU.clock);
         CPU.clock += 2;
     }
