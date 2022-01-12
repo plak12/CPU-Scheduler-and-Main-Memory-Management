@@ -22,7 +22,6 @@ public class CPU {
 
 
       boolean flag=true;
-        int i=0;
 
 
         //?
@@ -38,29 +37,42 @@ public class CPU {
             }
             if (flag)
             {
-                System.out.println("ok");
+                System.out.println("ok " +   CPU.clock);
                 break;
             }
 
-            for (Process curProcess : processes)
-            {
-                if ( curProcess.getPCB().getState() == ProcessState.NEW && CPU.clock == curProcess.getArrivalTime() )
+
+            for (int i=0; i < processes.length;i++) {
+
+                System.out.println(processes[i].toString());
+
+                if (processes[i].getPCB().getState() == ProcessState.NEW )
                 {
+                    if (CPU.clock >= processes[i].getArrivalTime())
+                    {
+                        currentProcess = i;
+                        if (mmu.loadProcessIntoRAM(processes[i])) {
+                            scheduler.addProcess(processes[i]);
+                            clock++;
+                         }
+                    }
+                    else i--;
+                }
+                // metafera apo to new ready
 
-                    tick();
-                } // metafera apo to new ready
-
-
+ 
 
                 boolean isRunning = false;
-                for (Process pp: processes) {
-                    if (pp.getPCB().getState() == ProcessState.RUNNING) {
+                for (int j=0; j < processes.length; j++) {
+                    if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
                         isRunning = true;
-                        running(pp);
+                        currentProcess = j;
+                        tick();
                         break;
                     }
                 }
-                if (! isRunning) {
+                if (! isRunning && scheduler.getNextProcess() != null) {
+
                     Process p = scheduler.getNextProcess();
                     p.run();
                     running(p);
@@ -74,14 +86,45 @@ public class CPU {
 
 
         }
+
+
+
+
+
+    }
+
+    public void tick() {
+        /* TODO: you need to add some code here
+         * Hint: this method should run once for every CPU cycle */
+        ;
+        //apo to new sto ready
+
+        running(processes[currentProcess]);
+        //running
+    }
+
+    public void running(Process p)
+    {
+        System.out.println("at running " + p.toString());
+        clock++;
+        p.minusRestTime();
+        if (p.getRestTime() <= 0)
+        {
+            p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
+            mmu.removeFromMemory(p);
+    // or otan ginete running
+        }
+    }
+
+}
 //        boolean flag=true;
 //        Process currentProcess2=processes[0];
 //        clock=currentProcess2.getArrivalTime();
 //        while(flag==true){
 //            for(int i=0;i<scheduler.getQuantum();i++) {
-//                for (Process curProcess : processes) {
-//                    if (clock == curProcess.getArrivalTime()) {
-//                        scheduler.addProcess(curProcess);
+//                for (Process processes[i] : processes) {
+//                    if (clock == processes[i].getArrivalTime()) {
+//                        scheduler.addProcess(processes[i]);
 //                    }
 //
 //
@@ -98,35 +141,3 @@ public class CPU {
 //
 //            if(processes.length==0)
 //                flag=false;
-
-
-
-
-    }
-
-    public void tick() {
-        /* TODO: you need to add some code here
-         * Hint: this method should run once for every CPU cycle */
-
-        //apo to new sto ready
-        if (mmu.loadProcessIntoRAM(processes[currentProcess])) {
-            scheduler.addProcess(processes[currentProcess]);
-            clock++;
-        }
-
-        //running
-    }
-
-    public void running(Process p)
-    {
-        clock++;
-        p.minusRestTime();
-        if (p.getRestTime() == 0)
-        {
-            p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
-            mmu.removeFromMemory(p);
-    // or otan ginete running
-        }
-    }
-
-}

@@ -20,7 +20,7 @@ public class MMU {
 
 
         int address = algorithm.fitProcess(p,currentlyUsedMemorySlots);
-        if (address !=-1)
+        if (address != -1)
             fit = true;
 
         if (fit)

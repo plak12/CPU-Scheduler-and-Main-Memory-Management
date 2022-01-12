@@ -16,6 +16,8 @@ public class FCFS extends Scheduler {
         /* TODO: you need to add some code here
          * and change the return value */
 
+        if(processes.isEmpty())
+            return null;
         int min = processes.get(0).getArrivalTime();
         Process rtn = processes.get(0);
 

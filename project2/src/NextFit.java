@@ -37,7 +37,7 @@ public class NextFit extends MemoryAllocationAlgorithm {
 
 
 
-        while(!fit || !repeat)
+        while(!fit && !repeat)
         {
 
 
@@ -63,29 +63,35 @@ public class NextFit extends MemoryAllocationAlgorithm {
 
             }
             else
-            {
+            { if (end > sum) {
+                start = 0;
+                blockStart = 0;
+                blockEnd = availableBlockSizes[0];
+            }
+            else {
                 blockStart = blockEnd;
                 start = blockStart;
-                end = updateEnd(start,p);
+                end = updateEnd(start, p);
 
-                int s=0;
-                for (int i=0;i < availableBlockSizes.length; i++)
-                {
-                    s+=availableBlockSizes[i];
+                int s = 0;
+                for (int i = 0; i < availableBlockSizes.length; i++) {
+                    s += availableBlockSizes[i];
 
-                    if (s == blockStart)
-                    {
-                        blockEnd = s + availableBlockSizes[i+1];
+                    if (s == blockStart) {
+                        blockEnd = s + availableBlockSizes[i + 1];
                         break;
                     }
                 }
-
             }
 
+            }
             if(start<=pointer)
-                repeatInt=1;
+            repeatInt=1;
             if(pointer<=start && repeatInt == 1)
                 repeat = true;
+
+
+
 
 
         }
