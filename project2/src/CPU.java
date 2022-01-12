@@ -103,15 +103,18 @@ public class CPU {
         //running
     }
 
-    public void running(Process p)
+    private void running(Process p)
     {
         System.out.println("at running " + p.toString());
         clock++;
-        p.minusRestTime();
+        p.setRestTime(p.getRestTime() - 1);
         if (p.getRestTime() <= 0)
         {
             p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
-            mmu.removeFromMemory(p);
+
+            ArrayList<MemorySlot> m = mmu.getCurrentlyUsedMemorySlots();
+            m.removeIf(mm -> p.equals(mm.getP()));
+            mmu.setCurrentlyUsedMemorySlots(m);
     // or otan ginete running
         }
     }

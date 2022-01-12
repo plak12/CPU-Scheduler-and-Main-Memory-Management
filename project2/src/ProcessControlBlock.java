@@ -1,6 +1,5 @@
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.UUID;
+
 
 public class ProcessControlBlock {
 
@@ -19,8 +18,8 @@ public class ProcessControlBlock {
         this.stopTimes = new ArrayList<Integer>();
         /* TODO: you need to add some code here
          * Hint: every process should get a unique PID */
-        Random r =new Random();
-        this.pid =  r.nextInt(1000) + 1 ;// change this line
+     //   Random r =new Random();
+        this.pid = 1;// r.nextInt(1000) + 1 ;// change this line
 
 
     }
@@ -43,7 +42,7 @@ public class ProcessControlBlock {
 
 
 
-    }
+     }
 
     public int getPid() {
         return this.pid;
