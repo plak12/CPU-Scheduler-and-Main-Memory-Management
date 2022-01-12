@@ -89,6 +89,8 @@ public class Process {
     public void minusRestTime() {restTime--;}
     public String toString()
     {
-        return getMemoryRequirements() + " " + getPCB().getState() + " " + getRestTime();
-    }
+        return getMemoryRequirements() + " " + getPCB().getState() + " " + getRestTime(); }
+
+    
+    
 }
