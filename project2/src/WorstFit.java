@@ -15,6 +15,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
          * should return -1. */
         int max=0,i=0,flag=0;
         //MemorySlot temp =null;
+        int max2=0,flag2=0;
         for (MemorySlot slot :currentlyUsedMemorySlots) {
             if(max<slot.getBlockEnd()-slot.getEnd()){
                 max=slot.getBlockEnd()-slot.getEnd();
@@ -23,13 +24,49 @@ public class WorstFit extends MemoryAllocationAlgorithm {
             i++;
             //temp=slot;
         }
-        MemorySlot temp = currentlyUsedMemorySlots.get(flag);
-        if(p.getMemoryRequirements()<=max){
-            address=temp.getEnd();
-            temp.setEnd(temp.getEnd()+p.getMemoryRequirements());
-            currentlyUsedMemorySlots.set(flag,temp);
+        i=0;
+        for (int block: availableBlockSizes ) {
+            if(max2<block){
+                max2=block;
+                flag2=i;
+            }
+            i++;
+        }
+        for (MemorySlot slot :currentlyUsedMemorySlots) {
+            if(getStartingPoint(flag2)==slot.getBlockStart()){
+                max2=0;
+                break;
+            }
+        }
+        if(max>max2) {
+            MemorySlot temp = currentlyUsedMemorySlots.get(flag);
+            if (p.getMemoryRequirements() <= max) {
+                address = temp.getBlockStart();
+                temp.setEnd(temp.getEnd() + p.getMemoryRequirements());
+                currentlyUsedMemorySlots.set(flag, temp);
+            }
+        }
+        else {
+            if (p.getMemoryRequirements() <= max2) {
+
+                MemorySlot slot = new MemorySlot(getStartingPoint(flag2), getStartingPoint(flag2) + p.getMemoryRequirements(), getStartingPoint(flag2), getStartingPoint(flag2) + availableBlockSizes[flag2], p);
+
+                currentlyUsedMemorySlots.add(slot);
+                address = getStartingPoint(flag2);
+            }
         }
         return address;
+
+
+
+    }
+    private int getStartingPoint(int flag2)
+    {
+        int start = 0;
+        for (int k = 0; k < flag2; k++) {
+            start += availableBlockSizes[k];
+        }
+        return start;
     }
 
 }
