@@ -55,8 +55,6 @@ public class WorstFit extends MemoryAllocationAlgorithm {
         }
         return address;
 
-
-
     }
     private int getStartingPoint(int flag2)
     {
