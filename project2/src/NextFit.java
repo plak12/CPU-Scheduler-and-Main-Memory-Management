@@ -57,7 +57,7 @@ public class NextFit extends MemoryAllocationAlgorithm {
                 {
                     address = start;
                     MemorySlot slot = new MemorySlot(start,end,blockStart,blockEnd,p);
-                    currentlyUsedMemorySlots.add(slot); // here or mmu
+                    currentlyUsedMemorySlots.add(slot);
                 }
 
 

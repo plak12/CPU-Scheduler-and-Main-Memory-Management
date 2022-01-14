@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public abstract class Scheduler {
 
     protected ArrayList<Process> processes; // the list of processes to be executed
-    // osa einai sto ready
+    // state: READY
 
     public Scheduler() {
         this.processes = new ArrayList<Process>();

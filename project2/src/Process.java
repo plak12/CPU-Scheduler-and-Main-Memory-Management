@@ -40,16 +40,14 @@ public class Process {
 
     }
 
-    // gia to SRTFS
+    // gia to SRTF
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
         //?
-        if(pcb.getState() == ProcessState.RUNNING)
-            CPU.clock += 2;
-        else
-            CPU.clock += 1; //?
         pcb.setState(ProcessState.READY,CPU.clock);
+        CPU.clock += 1; //?
+
 
     }
 
