@@ -18,7 +18,6 @@ public class MMU {
          * Hint: this should return true if the process was able to fit into memory
          * and false if not */
 
-
         int address = algorithm.fitProcess(p,currentlyUsedMemorySlots);
         if (address != -1)
             fit = true;

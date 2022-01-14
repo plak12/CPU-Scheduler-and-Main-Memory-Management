@@ -14,7 +14,6 @@ public class WorstFit extends MemoryAllocationAlgorithm {
          * loaded into if the process fits. In case the process doesn't fit, it
          * should return -1. */
         int max=0,i=0,flag=0;
-        //MemorySlot temp =null;
         int max2=0,flag2=0;
         for (MemorySlot slot :currentlyUsedMemorySlots) {
             if(max<slot.getBlockEnd()-slot.getEnd()){
@@ -22,7 +21,6 @@ public class WorstFit extends MemoryAllocationAlgorithm {
                 flag=i;
             }
             i++;
-            //temp=slot;
         }
         i=0;
         for (int block: availableBlockSizes ) {
