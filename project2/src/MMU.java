@@ -31,8 +31,11 @@ public class MMU {
         return fit;
     }
 
-    public void removeFromMemory(Process p)
-    {
-        currentlyUsedMemorySlots.removeIf(m -> m.getP().equals(p));
+    public ArrayList<MemorySlot> getCurrentlyUsedMemorySlots() {
+        return currentlyUsedMemorySlots;
+    }
+
+    public void setCurrentlyUsedMemorySlots(ArrayList<MemorySlot> currentlyUsedMemorySlots) {
+        this.currentlyUsedMemorySlots = currentlyUsedMemorySlots;
     }
 }
