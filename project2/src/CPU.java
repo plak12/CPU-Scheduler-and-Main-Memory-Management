@@ -51,10 +51,6 @@ public class CPU {
                         if (mmu.loadProcessIntoRAM(processes[i])) {
                             scheduler.addProcess(processes[i]);
                             clock++;
-                            //if scheduling algorithm = RR -> create list with processes in order to run
-                            if(scheduler instanceof RoundRobin){
-                                ((RoundRobin) scheduler).setNextProcess(processes[i]);
-                            }
                          }
                     }
                     else i--;
@@ -128,7 +124,7 @@ public class CPU {
                             break;
                         }
                     }
-                    //ean i diergasia mou pou trexei einai idia me tin diergasia pou prepei na trexei continue
+                    //if current process == next process to run in a cyclic way, continue
                     if(isRunning && scheduler.getNextProcess() != null){
                         if (processes[currentProcess].equals(scheduler.getNextProcess())){
                             tick();
@@ -140,6 +136,7 @@ public class CPU {
                                 scheduler.addProcess(processes[currentProcess]);
                         }
                     }
+                    //if there is only one process pending to RUN -> TERMINATED
                     if(isRunning && scheduler.getNextProcess() == null) {
                         while (true) {
                             if (processes[currentProcess].getPCB().getState() != ProcessState.TERMINATED) {
@@ -188,7 +185,6 @@ public class CPU {
             ArrayList<MemorySlot> m = mmu.getCurrentlyUsedMemorySlots();
             m.removeIf(mm -> p.equals(mm.getP()));
             mmu.setCurrentlyUsedMemorySlots(m);
-    // or otan ginete running
         }
     }
 

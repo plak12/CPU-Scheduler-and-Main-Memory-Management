@@ -7,7 +7,6 @@ public class Process {
     private int burstTime;
     private int memoryRequirements;
     private int restTime;
-    private int RRTime;
 
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
@@ -16,7 +15,6 @@ public class Process {
         this.memoryRequirements = memoryRequirements;
         this.pcb = new ProcessControlBlock();
         pcb.setState(ProcessState.NEW,CPU.clock);
-        RRTime = 0;
     }
 
     public int getBurstTime() {
@@ -25,8 +23,6 @@ public class Process {
     public void setBurstTime(int burstTime) {
         this.burstTime = burstTime;
     }
-    protected int getRRTime() { return RRTime; }
-    public void setRRTime(int RRTime) { this.RRTime = RRTime; }
 
     public ProcessControlBlock getPCB() {
         return this.pcb;

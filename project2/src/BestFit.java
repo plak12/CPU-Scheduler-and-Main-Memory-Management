@@ -16,30 +16,6 @@ public class BestFit extends MemoryAllocationAlgorithm {
         }
     }
 
-    /*public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
-        //boolean fit = false;
-        int address = -1;
-        int min=0,i=0,flag=0;
-        //MemorySlot temp =null;
-        for (MemorySlot slot : currentlyUsedMemorySlots) {
-            if(min > slot.getBlockEnd() - slot.getEnd()){
-                min = slot.getBlockEnd()-slot.getEnd();
-                flag = i;
-            }
-            i++;
-            //temp=slot;
-        }
-        MemorySlot temp = currentlyUsedMemorySlots.get(flag);
-        if(p.getMemoryRequirements()<=min){
-            address=temp.getEnd();
-            temp.setEnd(temp.getEnd()+p.getMemoryRequirements());
-            currentlyUsedMemorySlots.set(flag,temp);
-        }
-        return address;
-    }*/
-
-
-
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
         boolean fit = false;
         int address = -1;
@@ -48,12 +24,8 @@ public class BestFit extends MemoryAllocationAlgorithm {
          * loaded into if the process fits. In case the process doesn't fit, it
          * should return -1. */
 
-        int pointer = 0;
-        //int sum = 0, start = pointer, blockStart = 0, blockEnd =  availableBlockSizes[0] ,end = start + p.getMemoryRequirements();
-        int minFree = 0;//currentlyUsedMemorySlots(0).getBlockEnd()-currentlyUsedMemorySlots(0).getBlockStart();
+        int minFree = 0;
         int currAddress = 0, counter = 0, minSlot = 0;
-
-
 
         for ( MemorySlot slots : MemorySlots )
         {
