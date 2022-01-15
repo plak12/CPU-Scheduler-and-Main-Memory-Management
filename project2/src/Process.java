@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,35 +32,38 @@ public class Process {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
-        //?
 
+        // change process state to RUNNING + increase clock by 2
         pcb.setState(ProcessState.RUNNING,CPU.clock);
         CPU.clock += 2;
 
     }
 
-    // gia to SRTF
+    // for SRTF
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
-        //?
+
+        //set state to READY
         pcb.setState(ProcessState.READY,CPU.clock);
         //CPU.clock += 2; //γίνεται ταυτόχρονα με το RUNNING -> READY άρα δεν χρειάζεται ???
-
 
     }
 
     public double getWaitingTime() {
         /* TODO: you need to add some code here
          * and change the return value */
+
         ArrayList<Integer> start = pcb.getStartTimes();
         ArrayList<Integer> stop = pcb.getStopTimes();
-        double sum = start.get(0) - arrivalTime;
+        if(!(start.isEmpty() || stop.isEmpty())) {
+            double sum = start.get(0) - arrivalTime;
 
-        for(int i=0; i < stop.size() -1 ; i++)
-            sum += stop.get(i) - start.get(i+1);
-
-        return sum;
+            for (int i = 0; i < (stop.size() - 2); i++)
+                sum += stop.get(i) - start.get(i + 1);
+            return sum;
+        }
+        return 0;
     }
 
     public double getResponseTime() {
@@ -83,8 +85,8 @@ public class Process {
     }
     public int getMemoryRequirements() { return memoryRequirements;}
 
-    public int getRestTime(){return restTime;}
-    public void setRestTime(int n) {restTime = n;}
+    protected int getRestTime(){return restTime;}
+    protected void setRestTime(int n) {restTime = n;}
     public String toString()
     {
         return getMemoryRequirements() + " " + getPCB().getState() + " " + getRestTime(); }

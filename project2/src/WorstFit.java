@@ -1,3 +1,10 @@
+/**
+ * Worst Fit algorithm in Memory Management
+ * ------------------------------------------------------
+ * Worst Fit allocates a process to the partition which is largest
+ * sufficient among the freely available partitions available in the main memory.
+ */
+
 import java.util.ArrayList;
 
 public class WorstFit extends MemoryAllocationAlgorithm {

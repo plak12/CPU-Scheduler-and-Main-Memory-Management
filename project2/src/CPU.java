@@ -20,14 +20,10 @@ public class CPU {
         /* TODO: you need to add some code here
          * Hint: you need to run tick() in a loop, until there is nothing else to do... */
 
-
-      boolean flag=true;
-
-
-        //?
+        boolean flag;
         while (true)
         {
-            //βρίσκει αν έχουν τερματιστεί όλες οι διεργασίες
+            //checks if all processes are TERMINATED
             flag = true;
             for (Process p: processes) {
                 if (p.getPCB().getState() != ProcessState.TERMINATED) {
@@ -35,14 +31,14 @@ public class CPU {
                     break;
                 }
             }
-            //αν ναι σταματά η εκτέλεση της cpu
+            //stops cpu if all processes are terminated
             if (flag)
             {
                 System.out.println("ok " +   CPU.clock);
                 break;
             }
 
-
+            //change process' state: NEW -> READY
             for (int i=0; i < processes.length;i++) {
 
                 System.out.println(processes[i].toString());
@@ -59,38 +55,27 @@ public class CPU {
                     }
                     else i--;
                 }
-                // metafera apo to new ready
-
-
 
                 boolean isRunning = false;
-                //an trexei ton srtf
+                //check if scheduling algorithm is SRTF
                 if (scheduler.getQuantum() == -2) {
-
-                    //στον srtf θέλω να ελέξω αν υπάρχει διεργασία με μικρότερο rest time για να την βάλω να τρέξει
-
-                    //έλεγχος εάν τρέχει κάποια διεργασία
+                    //check if process' state is RUNNING
                     for (int j = 0; j < processes.length; j++) {
                         if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
                             currentProcess = j;
                             isRunning = true;
-                            //αυξάνω το ρολόι και μειώνω το rest time της διεργασίας
-                            //και αν η διεργασία έχει ολοκληρώσει την εκτέλεση της την βάζω σε κατάσταση TERMINATED
-                            //και βγαίνει από την λίστα currently used memory slots
-                            //tick();
                             break;
                         }
                     }
-                    //βρίσκω την διεργασία με το μικρότερο rest time (state: READY)
-                    //Process pr = scheduler.getNextProcess();
-                    //εάν η διεργασία που τρέχει τώρα έχει μικρότερο rest time από τις διεργασίες που είναι έτοιμες για να εκτελεστούν
+                    //find process with minimum remaining time (state: READY) -> from scheduler
+                    //remaining time of currently RUNNING process < remaining time of READY processes
                     if(isRunning && scheduler.getNextProcess() != null) {
                         if (scheduler.getNextProcess().getRestTime() > processes[currentProcess].getRestTime()) {
                             tick();
                         }
                         else{
                             isRunning = false;
-                            //θέτει την διεργασία σε κατάσταση READY
+                            //process' state = READY
                             processes[currentProcess].waitInBackground();
                             scheduler.addProcess(processes[currentProcess]);
                         }
@@ -106,61 +91,40 @@ public class CPU {
                         }
                     }
                     if (!isRunning && scheduler.getNextProcess() != null) {
-                        //συνεχίζω με την επόμενη διεργασία
+                        //continue with next process
                         Process p = scheduler.getNextProcess();
-                        //η οποία μπαίνει σε κατάσταση RUNNING + αυξάνω το ρολόι κατά 2
                         p.run();
                         running(p);
                         scheduler.removeProcess(p);
                     }
-
-
-
-
-                }else{
-
-
-                    //έλεγχος εάν τρέχει κάποια διεργασία
+                }else{ //scheduling algorithms except SRTF
+                    //check if process' state is RUNNING
                     for (int j = 0; j < processes.length; j++) {
                         if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
                             isRunning = true;
                             currentProcess = j;
-                            //αυξάνω το ρολόι και μειώνω το rest time της διεργασίας
-                            //και αν η διεργασία έχει ολοκληρώσει την εκτέλεση της την βάζω σε κατάσταση TERMINATED
-                            //και βγαίνει από την λίστα currently used memory slots
                             tick();
                             break;
                         }
                     }
-                    //εάν δεν έχω κάποια διεργασία σε κατάσταση RUNNING και υπάρχει διεργασία προς εκτέλεση
+                    //no process RUNNING + list with processes at READY state not empty
                     if (!isRunning && scheduler.getNextProcess() != null) {
-                        //συνεχίζω με την επόμενη διεργασία
+                        //continue with the next process
                         Process p = scheduler.getNextProcess();
-                        //η οποία μπαίνει σε κατάσταση RUNNING + αυξάνω το ρολόι κατά 2
                         p.run();
                         running(p);
                         scheduler.removeProcess(p);
                     }
                 }
-
-
             }
-
-
-
         }
-
-
-
-
-
     }
 
     public void tick() {
         /* TODO: you need to add some code here
          * Hint: this method should run once for every CPU cycle */
-        ;
-        //apo to new sto ready
+
+        //state: NEW -> READY
         running(processes[currentProcess]);
         //running
     }
@@ -168,16 +132,16 @@ public class CPU {
     private void running(Process p)
     {
         System.out.println("at running " + p.toString());
-        //όταν τρέχει μια διεργασία -> αυξάνει το ρολόι και μειώνει το rest time κατά 1
+        //process currently running -> increase clock and decrease remaining time by 1
         clock++;
         p.setRestTime(p.getRestTime() - 1);
-        //εάν η διεργασία έχει ολοκληρωθεί
+        //process completed
         if (p.getRestTime() <= 0)
         {
-            //μπαίνει σε κατάσταση TERMINATED
+            //state = TERMINATED
             p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
 
-            //και ελευθερώνεται ο χώρος που χρησιμοποιεί στην μνήμη
+            //free used memory
             ArrayList<MemorySlot> m = mmu.getCurrentlyUsedMemorySlots();
             m.removeIf(mm -> p.equals(mm.getP()));
             mmu.setCurrentlyUsedMemorySlots(m);

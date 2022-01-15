@@ -1,3 +1,8 @@
+/**
+ * In the Shortest Remaining Time First (SRTF) scheduling algorithm,
+ * the process with the smallest amount of time remaining until completion is selected to execute.
+ */
+
 public class SRTF extends Scheduler {
 
     public SRTF() {
@@ -12,10 +17,12 @@ public class SRTF extends Scheduler {
     public Process getNextProcess() {
         /* TODO: you need to add some code here
          * and change the return value */
-        //εάν δεν υπάρχει καμία δειργασία σε κατάσταση ready επιστρέφει null -> ενδεικτική τιμή για τερματισμό
+
+        //no process with state: READY -> signal value
         if(processes.isEmpty())
             return null;
-        //βρίσκει την διεργασία με τον μικρότερο rest time
+
+        //process with minimum remaining time
         int min = processes.get(0).getRestTime();
         Process rtn = processes.get(0);
 
@@ -28,13 +35,11 @@ public class SRTF extends Scheduler {
         return rtn;
     }
 
-    //anti gia true/false an trexei i srtf
+    //used as signal value -> scheduler = SRTF
     @Override
     public int getQuantum() {
         return -2;
     }
-
-    //private boolean isSRTF(){ return true; }
 
 
 }

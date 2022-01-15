@@ -1,4 +1,6 @@
-
+/**
+ * In the Round Robin scheduling algorithm, each process is assigned a fixed time slot in a cyclic way.
+ */
 public class RoundRobin extends Scheduler {
 
     private int quantum;

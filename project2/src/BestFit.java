@@ -1,3 +1,9 @@
+/**
+ * Best Fit algorithm in Memory Management
+ * -----------------------------------------
+ * Best fit allocates the process to a partition which is
+ * the smallest sufficient partition among the free available partitions.
+ */
 //import java.util.ArrayList;
 //
 //public class BestFit extends MemoryAllocationAlgorithm {

@@ -1,3 +1,9 @@
+/**
+ * First Fit algorithm in Memory Management
+ * -------------------------------------------
+ * In the first fit, the partition is allocated which is first sufficient from the top of Main Memory.
+ */
+
 import java.util.ArrayList;
 
 public class FirstFit extends MemoryAllocationAlgorithm {
@@ -6,7 +12,7 @@ public class FirstFit extends MemoryAllocationAlgorithm {
         super(availableBlockSizes);
     }
 
-    //sum up available block sizes για να έχουμε την μνήμη σε συνεχόμενες θέσεις (πχ: από 0 μέχρι 85 για blocks: 10,40,25,30)
+    //sum up available block sizes -> continuous memory (for example: from 0 to 85 for blocks: 10,40,25,30)
     private int getSumOfBlockSize()
     {
         int sum = 0;
@@ -35,37 +41,31 @@ public class FirstFit extends MemoryAllocationAlgorithm {
 
 
         while(!fit) {
-            if ( end <= blockEnd ) // ελέγχω αν χωράει στο block που είμαι
+            if ( end <= blockEnd ) // check if fits in current block
             {
-                fit = true; // θεωρώ ότι χωράει
+                fit = true; // it fits!!
                 for (MemorySlot m: currentlyUsedMemorySlots) {
-                    if (m.getStart() >= start && m.getStart() < end) // ελέγχω αν άλλη διεργασία παίρνει χώρο τον οποίο χρειάζομαι
+                    if (m.getStart() >= start && m.getStart() < end) // check if other process uses memory that I need
                     {
                         fit = false;
                         start = m.getEnd();
                         end = updateEnd(start, p);
-
                     }
                 }
-                //εάν η διεργασία χωράει, προσθέτω το slot που πρόκειται να δεσμεύσει στην μνήμη στην λίστα με τα currently used memory slots
+                //if process still fits, add slot in currently used memory slots
                 if(fit) {
-                    //ορίζω την διεύθυνση που θα επιστρέψω
                     address = start;
                     MemorySlot slot = new MemorySlot(start, end, blockStart, blockEnd, p);
                     currentlyUsedMemorySlots.add(slot);
                 }
-            } else { // εάν δεν χωράει στο block που είμαι
-
-
-                // διαφορετικά πάω στον επόμενο διαθέσιμο χώρο μνήμης
+            } else { // if process doesn't fit at current block
+                // check next block
                     blockStart = blockEnd;
                     start = blockStart;
                     end = updateEnd(start, p);
 
                 if(start == sumOfBlockSize)
                     break;
-                    //εάν υπάρχει διαθέσιμος χώρος μνήμης στο ίδιο block δεν θα χρειαστεί να αλλάξω το blockEnd
-                    //εάν όμως το block μνήμης στο οποίο βρίσκομαι είναι ήδη κατηλειμένο τότε παώ στο επόμενο block
                     int s = 0;
                     for (int i = 0; i < availableBlockSizes.length; i++) {
                         s += availableBlockSizes[i];
@@ -75,10 +75,7 @@ public class FirstFit extends MemoryAllocationAlgorithm {
                             break;
                         }
                     }
-
-
             }
-
         }
 
         //in case the process doesn't fit return -1

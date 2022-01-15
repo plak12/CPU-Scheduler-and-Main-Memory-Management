@@ -2,8 +2,7 @@ import java.util.ArrayList;
 
 public abstract class Scheduler {
 
-    protected ArrayList<Process> processes; // the list of processes to be executed
-    // state: READY
+    protected ArrayList<Process> processes; // the list of processes to be executed -> state: READY
 
     public Scheduler() {
         this.processes = new ArrayList<Process>();
@@ -19,8 +18,6 @@ public abstract class Scheduler {
      * schedulers. */
     public void removeProcess(Process p) {
         /* TODO: you need to add some code here */
-       //?
-
         processes.remove(p);
 
     }
