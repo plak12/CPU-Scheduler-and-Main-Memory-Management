@@ -31,7 +31,7 @@ public class FCFS extends Scheduler {
                 min = p.getArrivalTime();
                 rtn = p;
             }
-            }
+        }
         return rtn;
     }
 

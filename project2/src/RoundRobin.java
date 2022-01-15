@@ -1,9 +1,12 @@
 /**
  * In the Round Robin scheduling algorithm, each process is assigned a fixed time slot in a cyclic way.
  */
+import java.util.ArrayList;
 public class RoundRobin extends Scheduler {
 
     private int quantum;
+    //ascending listing of processes according arrival time
+    private ArrayList<Process> nextProcess = new ArrayList<>();
 
     public RoundRobin() {
         this.quantum = 1; // default quantum
@@ -23,16 +26,20 @@ public class RoundRobin extends Scheduler {
     public Process getNextProcess() {
         /* TODO: you need to add some code here
          * and change the return value */
-        Process temp;
-        int i;
-        temp= processes.get(0);
-        for(i=0;i<processes.size()-1;i++){
-            processes.set(i,processes.get(i+1));
-        }
-        processes.set(i,temp);
-        return processes.get(0); //prwta kaleitai h addprocess kai meta h getnext
+
+        //stin processes oi diergasies mpainoun me tin seira pou erxontai kai ginontai READY
+        //ara ego trexo ousiastika tin proti diergasia kathe fora
+
+        //no process with state: READY -> signal value
+        if (processes.isEmpty())
+            return null;
+
+        //if all processes are executed return null -> signal value
+        //return the next processes to be executed
+        return processes.get(0);
     }
-    public int getQuantum(){
-        return quantum;
-    }
+
+    public int getQuantum(){ return quantum; }
+
+    protected void setNextProcess(Process p){ nextProcess.add(p); }
 }

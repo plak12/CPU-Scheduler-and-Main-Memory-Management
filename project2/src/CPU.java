@@ -51,6 +51,10 @@ public class CPU {
                         if (mmu.loadProcessIntoRAM(processes[i])) {
                             scheduler.addProcess(processes[i]);
                             clock++;
+                            //if scheduling algorithm = RR -> create list with processes in order to run
+                            if(scheduler instanceof RoundRobin){
+                                ((RoundRobin) scheduler).setNextProcess(processes[i]);
+                            }
                          }
                     }
                     else i--;
@@ -97,7 +101,7 @@ public class CPU {
                         running(p);
                         scheduler.removeProcess(p);
                     }
-                }else{ //scheduling algorithms except SRTF
+                }else if (scheduler.getQuantum() == -1){ //scheduling algorithm = FCFS
                     //check if process' state is RUNNING
                     for (int j = 0; j < processes.length; j++) {
                         if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
@@ -108,13 +112,52 @@ public class CPU {
                         }
                     }
                     //no process RUNNING + list with processes at READY state not empty
-                    if (!isRunning && scheduler.getNextProcess() != null) {
+                    if ( !isRunning && scheduler.getNextProcess() != null ){
                         //continue with the next process
                         Process p = scheduler.getNextProcess();
                         p.run();
                         running(p);
                         scheduler.removeProcess(p);
                     }
+                } else{ //scheduling algorithm = Round Robin
+                    //check if process' state is RUNNING
+                    for (int j = 0; j < processes.length; j++) {
+                        if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
+                            isRunning = true;
+                            currentProcess = j;
+                            break;
+                        }
+                    }
+                    //ean i diergasia mou pou trexei einai idia me tin diergasia pou prepei na trexei continue
+                    if(isRunning && scheduler.getNextProcess() != null){
+                        if (processes[currentProcess].equals(scheduler.getNextProcess())){
+                            tick();
+                        }
+                        else{
+                                isRunning = false;
+                                //process' state = READY
+                                processes[currentProcess].waitInBackground();
+                                scheduler.addProcess(processes[currentProcess]);
+                        }
+                    }
+                    if(isRunning && scheduler.getNextProcess() == null) {
+                        while (true) {
+                            if (processes[currentProcess].getPCB().getState() != ProcessState.TERMINATED) {
+                                tick();
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    //no process RUNNING + list with processes at READY state not empty
+                    if ( !isRunning && scheduler.getNextProcess() != null ){
+                        //continue with the next process
+                        Process p = scheduler.getNextProcess();
+                        p.run();
+                        running(p);
+                        scheduler.removeProcess(p);
+                    }
+
                 }
             }
         }
@@ -150,27 +193,3 @@ public class CPU {
     }
 
 }
-//        boolean flag=true;
-//        Process currentProcess2=processes[0];
-//        clock=currentProcess2.getArrivalTime();
-//        while(flag==true){
-//            for(int i=0;i<scheduler.getQuantum();i++) {
-//                for (Process processes[i] : processes) {
-//                    if (clock == processes[i].getArrivalTime()) {
-//                        scheduler.addProcess(processes[i]);
-//                    }
-//
-//
-//
-//                }
-//                currentProcess2.setBurstTime(currentProcess2.getBurstTime()-1);
-//                if(currentProcess2.getBurstTime()==0){
-//                    scheduler.removeProcess(currentProcess2);
-//                    break;
-//                }
-//                clock++; //isws prepei na eine pio panw
-//            }
-//           currentProcess2= scheduler.getNextProcess();
-//
-//            if(processes.length==0)
-//                flag=false;
