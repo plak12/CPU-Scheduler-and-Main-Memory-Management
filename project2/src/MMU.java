@@ -18,14 +18,15 @@ public class MMU {
          * Hint: this should return true if the process was able to fit into memory
          * and false if not */
 
-
         int address = algorithm.fitProcess(p,currentlyUsedMemorySlots);
         if (address != -1)
             fit = true;
-
         if (fit)
             p.getPCB().setState(ProcessState.READY,CPU.clock);
-
+        else {
+            System.out.println("  "+p.getMemoryRequirements()+" NOT FIT  "); ////
+            p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);////
+        }
         return fit;
     }
 
