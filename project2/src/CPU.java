@@ -71,20 +71,19 @@ public class CPU {
                         break;
                     }
                 }
-                if (! isRunning && scheduler.getNextProcess() != null) {
-
+                if (! isRunning && scheduler.getNextProcess() != null && !(scheduler instanceof RoundRobin)) {
                     Process p = scheduler.getNextProcess();
                     p.run();
                     running(p);
                     scheduler.removeProcess(p);
-
                 }
-
-
+                else if ( !isRunning && scheduler.getNextProcess() != null ){
+                    Process p = scheduler.getNextProcess();
+                    if (p.getRRTime() == 0) p.run();
+                    running(p);
+                    scheduler.removeProcess(p);
+                }
             }
-
-
-
         }
 
 
@@ -118,29 +117,4 @@ public class CPU {
     // or otan ginete running
         }
     }
-
 }
-//        boolean flag=true;
-//        Process currentProcess2=processes[0];
-//        clock=currentProcess2.getArrivalTime();
-//        while(flag==true){
-//            for(int i=0;i<scheduler.getQuantum();i++) {
-//                for (Process processes[i] : processes) {
-//                    if (clock == processes[i].getArrivalTime()) {
-//                        scheduler.addProcess(processes[i]);
-//                    }
-//
-//
-//
-//                }
-//                currentProcess2.setBurstTime(currentProcess2.getBurstTime()-1);
-//                if(currentProcess2.getBurstTime()==0){
-//                    scheduler.removeProcess(currentProcess2);
-//                    break;
-//                }
-//                clock++; //isws prepei na eine pio panw
-//            }
-//           currentProcess2= scheduler.getNextProcess();
-//
-//            if(processes.length==0)
-//                flag=false;
