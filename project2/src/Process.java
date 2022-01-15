@@ -46,7 +46,7 @@ public class Process {
          * Hint: this should run every time a process stops running */
         //?
         pcb.setState(ProcessState.READY,CPU.clock);
-        CPU.clock += 1; //?
+        //CPU.clock += 2; //γίνεται ταυτόχρονα με το RUNNING -> READY άρα δεν χρειάζεται ???
 
 
     }

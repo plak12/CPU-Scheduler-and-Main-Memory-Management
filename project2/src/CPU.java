@@ -72,8 +72,8 @@ public class CPU {
                     //έλεγχος εάν τρέχει κάποια διεργασία
                     for (int j = 0; j < processes.length; j++) {
                         if (processes[j].getPCB().getState() == ProcessState.RUNNING) {
-                            isRunning = true;
                             currentProcess = j;
+                            isRunning = true;
                             //αυξάνω το ρολόι και μειώνω το rest time της διεργασίας
                             //και αν η διεργασία έχει ολοκληρώσει την εκτέλεση της την βάζω σε κατάσταση TERMINATED
                             //και βγαίνει από την λίστα currently used memory slots
@@ -81,22 +81,37 @@ public class CPU {
                             break;
                         }
                     }
-                    Process pr = scheduler.getNextProcess();
-                    if(pr.equals(processes[currentProcess])){
-                        tick();
-                    }else {
-                        if (pr != null) {
-                            //εάν δεν έχω κάποια διεργασία σε κατάσταση RUNNING και υπάρχει διεργασία προς εκτέλεση
-                            processes[currentProcess].waitInBackground();
-                            //συνεχίζω με την επόμενη διεργασία
-                            //η οποία μπαίνει σε κατάσταση RUNNING + αυξάνω το ρολόι κατά 2
-                            pr.getPCB().setState(ProcessState.RUNNING, CPU.clock);
+                    //βρίσκω την διεργασία με το μικρότερο rest time (state: READY)
+                    //Process pr = scheduler.getNextProcess();
+                    //εάν η διεργασία που τρέχει τώρα έχει μικρότερο rest time από τις διεργασίες που είναι έτοιμες για να εκτελεστούν
+                    if(isRunning && scheduler.getNextProcess() != null) {
+                        if (scheduler.getNextProcess().getRestTime() > processes[currentProcess].getRestTime()) {
                             tick();
-                            pr.run();
-                            running(pr);
-                            scheduler.removeProcess(pr);
-
                         }
+                        else{
+                            isRunning = false;
+                            //θέτει την διεργασία σε κατάσταση READY
+                            processes[currentProcess].waitInBackground();
+                            scheduler.addProcess(processes[currentProcess]);
+                        }
+                    }
+                    if(isRunning && scheduler.getNextProcess() == null) {
+                        while (true) {
+                            if (processes[currentProcess].getPCB().getState() != ProcessState.TERMINATED) {
+                                tick();
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                    }
+                    if (!isRunning && scheduler.getNextProcess() != null) {
+                        //συνεχίζω με την επόμενη διεργασία
+                        Process p = scheduler.getNextProcess();
+                        //η οποία μπαίνει σε κατάσταση RUNNING + αυξάνω το ρολόι κατά 2
+                        p.run();
+                        running(p);
+                        scheduler.removeProcess(p);
                     }
 
 
@@ -146,7 +161,6 @@ public class CPU {
          * Hint: this method should run once for every CPU cycle */
         ;
         //apo to new sto ready
-
         running(processes[currentProcess]);
         //running
     }

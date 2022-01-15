@@ -15,8 +15,8 @@ public class PC {
         MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
         //MemoryAllocationAlgorithm algorithm = new NextFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);
-        //Scheduler scheduler = new FCFS();
-        Scheduler scheduler = new SRTF();
+        Scheduler scheduler = new FCFS();
+        //Scheduler scheduler = new SRTF();
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
     }

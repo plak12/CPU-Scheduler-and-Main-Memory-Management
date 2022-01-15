@@ -12,9 +12,10 @@ public class SRTF extends Scheduler {
     public Process getNextProcess() {
         /* TODO: you need to add some code here
          * and change the return value */
-        //βρίσκει την διεργασία με τον μικρότερο rest time
+        //εάν δεν υπάρχει καμία δειργασία σε κατάσταση ready επιστρέφει null -> ενδεικτική τιμή για τερματισμό
         if(processes.isEmpty())
             return null;
+        //βρίσκει την διεργασία με τον μικρότερο rest time
         int min = processes.get(0).getRestTime();
         Process rtn = processes.get(0);
 
