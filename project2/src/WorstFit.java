@@ -8,7 +8,7 @@
 import java.util.ArrayList;
 
 public class WorstFit extends MemoryAllocationAlgorithm {
-
+    private int [] availableBlockSizes2 = availableBlockSizes;
     public WorstFit(int[] availableBlockSizes) {
         super(availableBlockSizes);
     }
@@ -30,7 +30,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
             i++;
         }
         i=0;
-        for (int block: availableBlockSizes ) {
+        for (int block: availableBlockSizes2 ) {
             if(max2<block){
                 max2=block;
                 flag2=i;
@@ -55,7 +55,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
             if (p.getMemoryRequirements() <= max2) {
 
                 MemorySlot slot = new MemorySlot(getStartingPoint(flag2), getStartingPoint(flag2) + p.getMemoryRequirements(), getStartingPoint(flag2), getStartingPoint(flag2) + availableBlockSizes[flag2], p);
-
+                availableBlockSizes2[flag2] = availableBlockSizes2[flag2] - p.getMemoryRequirements();
                 currentlyUsedMemorySlots.add(slot);
                 address = getStartingPoint(flag2);
             }
