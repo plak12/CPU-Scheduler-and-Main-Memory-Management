@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 public class ProcessControlBlock {
 
     private final int pid;
@@ -19,8 +18,8 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: every process should get a unique PID */
      //   Random r =new Random();
-        this.pid = 1;// r.nextInt(1000) + 1 ;// change this line
-
+        //this.pid = 1; //r.nextInt(1000) + 1 ;
+        this.pid = (int) System.currentTimeMillis() % 10000 ;
 
     }
 

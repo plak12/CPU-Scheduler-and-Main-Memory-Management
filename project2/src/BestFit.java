@@ -1,5 +1,8 @@
 /**
- * This class represents BestFit algorithm
+ * BestFit algorithm in Memory Management
+ * -----------------------------------------
+ * Best fit allocates the process to a partition which
+ * is the smallest sufficient partition among the free available partitions.
  */
 
 import java.util.ArrayList;

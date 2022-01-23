@@ -14,9 +14,12 @@ public class PC {
         final int[] availableBlockSizes = {15, 40, 10, 20}; // sizes in kB
         //MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
         MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
+        //MemoryAllocationAlgorithm algorithm = new WorstFit(availableBlockSizes);
+        //MemoryAllocationAlgorithm algorithm = new NextFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);
         //Scheduler scheduler = new FCFS();
-        Scheduler scheduler = new RoundRobin();
+        Scheduler scheduler = new SRTF();
+        //Scheduler scheduler = new RoundRobin();
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
 

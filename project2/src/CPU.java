@@ -41,7 +41,7 @@ public class CPU {
             //change process' state: NEW -> READY
             for (int i=0; i < processes.length;i++) {
 
-                System.out.println(processes[i].toString());
+                //System.out.println(processes[i].toString());
 
                 if (processes[i].getPCB().getState() == ProcessState.NEW )
                 {
@@ -171,7 +171,7 @@ public class CPU {
 
     private void running(Process p)
     {
-        System.out.println("at running " + p.toString());
+        //System.out.println("at running " + p.toString());
         //process currently running -> increase clock and decrease remaining time by 1
         clock++;
         p.setRestTime(p.getRestTime() - 1);

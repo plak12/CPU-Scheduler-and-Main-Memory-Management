@@ -84,9 +84,10 @@ public class Process {
 
     protected int getRestTime(){return restTime;}
     protected void setRestTime(int n) {restTime = n;}
-    public String toString()
+
+    /*public String toString()
     {
-        return getMemoryRequirements() + " " + getPCB().getState() + " " + getRestTime(); }
+        return getMemoryRequirements() + " " + getPCB().getState() + " " + getRestTime(); }*/
 
     
     

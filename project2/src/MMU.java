@@ -24,8 +24,8 @@ public class MMU {
         if (fit)
             p.getPCB().setState(ProcessState.READY,CPU.clock);
         else {
-            System.out.println("  "+p.getMemoryRequirements()+" NOT FIT  "); ////
-            p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);////
+            //System.out.println("  "+p.getMemoryRequirements()+" NOT FIT  ");
+            p.getPCB().setState(ProcessState.TERMINATED,CPU.clock);
         }
         return fit;
     }
